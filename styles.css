@@ -1,0 +1,279 @@
+/* ### Theme 1 */
+
+/* #### Backgrounds */
+
+:root {
+  --Very-dark-blue-main-bg: hsl(222, 26%, 31%);
+  /*(main-bg)*/
+  --Very-dark-blue-keypad-bg: hsl(223, 31%, 20%);
+  /*(toggle bg, keypad bg)*/
+  --Very-dark-blue-screen-bg: hsl(224, 36%, 15%);
+
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* #### Keys
+
+- Desaturated dark blue (key background): hsl(225, 21%, 49%)
+- Desaturated dark blue (key shadow): hsl(224, 28%, 35%)
+
+- Red (key background, toggle): hsl(6, 63%, 50%)
+- Dark red (key shadow): hsl(6, 70%, 34%)
+
+- Light grayish orange (key background): hsl(30, 25%, 89%)
+- Grayish orange (key shadow): hsl(28, 16%, 65%)
+
+#### Text
+
+- Very dark grayish blue: hsl(221, 14%, 31%)
+- White: hsl(0, 0%, 100%) */
+
+body {
+  background-color: var(--Very-dark-blue-main-bg);
+  font-family: "League Spartan", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.container {
+  margin: 0 auto;
+  width: 25%;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.title-sec {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+
+.title-1 {
+  font-weight: 700;
+  font-size: 1.7rem;
+}
+
+.title-2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: .8rem;
+}
+
+.theme-text {
+  font-size: .7rem;
+  font-weight: 500;
+}
+
+.theme-num {
+  display: flex;
+  justify-content: space-around;
+  font-weight: 500;
+}
+
+.theme-num div {
+  font-size: .6rem;
+}
+
+#output {
+  font-family: "League Spartan", sans-serif;
+  width: 100%;
+  height: 4rem;
+  font-size: 2rem;
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  outline: none;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  overflow-x: auto;
+  padding: .5rem 1rem;
+  border-radius: .4rem;
+  background-color: hsl(224, 36%, 15%);
+}
+
+.keypad {
+  background-color: var(--Very-dark-blue-keypad-bg);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: .4rem;
+}
+
+.btn {
+  color: hsl(198, 20%, 13%);
+  background-color: #fff;
+  border-radius: .4rem;
+  font-size: 1.5625rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  padding-block: .35rem;
+  box-shadow: 0 2px 0px 0px hsl(28, 16%, 65%);
+}
+
+.reset,
+.equal {
+  grid-column: span 2;
+  color: #fff;
+}
+
+.reset,
+.del {
+  background-color: hsl(225, 21%, 49%);
+  box-shadow: 0 2px 0px 0px hsl(224, 28%, 35%);
+  color: #fff;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.equal {
+  background-color: hsl(6, 63%, 50%);
+  box-shadow: 0 2px 0px 0px hsl(6, 70%, 34%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  /* Adjusted width for three options */
+  height: 17px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 4px;
+  bottom: 2.2992px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+/* Custom styles for three states */
+.switch[data-state="0"] .slider {
+  background-color: hsl(223, 31%, 20%);
+}
+
+.switch[data-state="1"] .slider {
+  background-color: hsl(0, 5%, 81%);
+}
+
+.switch[data-state="2"] .slider {
+  background-color: hsl(268, 71%, 12%);
+}
+
+.switch[data-state="0"] .slider:before {
+  transform: translateX(0);
+  background-color: hsl(6, 63%, 50%);
+}
+
+.switch[data-state="1"] .slider:before {
+  transform: translateX(14px);
+  /* Adjust for the middle position */
+  background-color: hsl(25, 98%, 40%);
+}
+
+.switch[data-state="2"] .slider:before {
+  transform: translateX(31px);
+  /* Adjust for the end position */
+  background-color: hsl(176, 100%, 44%);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* @media screen and (max-width:900px) {
+  .container {
+    width: 35%;
+  }
+} */
+
+@media screen and (max-width:768px) {
+  .container {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width:630px) {
+  .container {
+    width: 50%;
+  }  
+}
+
+@media screen and (max-width:480px) {
+  .container {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width:425px) {
+  .container {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width:375px) {
+  .container {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width:320px) {
+  .container {
+    width: 90%;
+  }
+}
+@media screen and (max-width:260px) {
+  .container {
+    display:none;
+  }
+}
