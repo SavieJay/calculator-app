@@ -8,11 +8,16 @@ const color2 = document.querySelectorAll(".color-2");
 const color3 = document.querySelectorAll(".num");
 const keypad = document.querySelector(".keypad");
 document.querySelector(".switch").addEventListener("click", function () {
-  let currentState = parseInt(this.getAttribute("data-state"));
+  let currentState = parseInt(localStorage.getItem("themeState") || "0");
   let nextState = (currentState + 1) % 3; // Cycle through 0, 1, 2
   this.setAttribute("data-state", nextState);
+  localStorage.setItem("themeState", nextState);
 
-  if (nextState === 0) {
+  applyTheme(nextState);
+});
+
+function applyTheme(state) {
+  if (state === 0) {
     document.body.style.backgroundColor = 'hsl(222, 26%, 31%)';
     color2.forEach((color) => {
       color.style.color = 'hsl(0, 0%, 100%)';
@@ -32,8 +37,7 @@ document.querySelector(".switch").addEventListener("click", function () {
     calc.style.color = 'hsl(0, 0%, 100%)';
     calc.style.boxShadow = '0 2px 0px 0px hsl(6, 70%, 34%)';
     keypad.style.backgroundColor = 'hsl(223, 31%, 20%)';
-    ////////////////////////////////////////////////////////////
-  } else if (nextState === 1) {
+  } else if (state === 1) {
     document.body.style.backgroundColor = 'hsl(0, 0%, 90%)';
     color2.forEach((color) => {
       color.style.color = 'hsl(60, 10%, 19%)';
@@ -53,8 +57,7 @@ document.querySelector(".switch").addEventListener("click", function () {
     calc.style.color = 'hsl(0, 0%, 100%)';
     calc.style.boxShadow = '0 2px 0px 0px hsl(25, 99%, 27%)';
     keypad.style.backgroundColor = 'hsl(0, 5%, 81%)';
-    ///////////////////////////////////////////////////////////
-  } else if (nextState === 2) {
+  } else if (state === 2) {
     document.body.style.backgroundColor = 'hsl(268, 75%, 9%)'; 
     color2.forEach((color) => {
       color.style.color = 'hsl(52, 100%, 62%)';
@@ -73,36 +76,62 @@ document.querySelector(".switch").addEventListener("click", function () {
     calc.style.color = 'hsl(198, 20%, 13%)';
     keypad.style.backgroundColor = 'hsl(268, 71%, 12%)';
   }
+}
+
+// Apply the saved theme on page load
+document.addEventListener('DOMContentLoaded', function() {
+  let savedState = parseInt(localStorage.getItem("themeState") || "0");
+  document.querySelector(".switch").setAttribute("data-state", savedState);
+  applyTheme(savedState);
 });
 
 
 buttons.forEach((button) => {
   button.addEventListener("click", function () {
-      const value = this.textContent.trim();
+    const value = this.textContent.trim();
+    let currentOutput = output.textContent.trim();
 
-      if (/[0-9]/.test(value)) {
-          // If it's a number, add it to the last number
-          const parts = output.textContent.split(/([\+\-\x\/])/); // Split by operators
-          let lastPart = parts.pop(); // Extract the last part
-          lastPart = (lastPart + value).replace(/,/g, ''); // Append value and remove commas
-          parts.push(parseFloat(lastPart).toLocaleString(undefined, { maximumFractionDigits: 20 }));
-          output.textContent = parts.join('');
-      } else if (value === '.') {
-          // Handle decimal point
-          const parts = output.textContent.split(/([\+\-\x\/])/); // Split by operators
-          let lastPart = parts.pop(); // Extract the last part
-          if (!lastPart.includes('.')) {
-              // Add decimal only if it doesn't already exist
-              lastPart += '.';
-          }
-          parts.push(lastPart); // Push the updated number
-          output.textContent = parts.join('');
-      } else if (/[\+\-\x\/]/.test(value)) {
-          // If it's an operator, append it with spaces
-          output.textContent += `${value} `;
+    if (/[0-9]/.test(value)) {
+      // If it's a number
+      if (currentOutput === '0' || currentOutput === 'Error') {
+        output.textContent = value;
+      } else {
+        const parts = currentOutput.split(/([+\-x/])/);
+        let lastPart = parts.pop() || '';
+        lastPart = (lastPart + value).replace(/,/g, '');
+        parts.push(formatNumber(lastPart));
+        output.textContent = parts.join('');
       }
+    } else if (value === '.') {
+      // Handle decimal point
+      const parts = currentOutput.split(/([+\-x/])/);
+      let lastPart = parts.pop() || '0';
+      if (!lastPart.includes('.')) {
+        lastPart += '.';
+        parts.push(lastPart);
+        output.textContent = parts.join('');
+      }
+    } else if (/[+\-x/]/.test(value)) {
+      // If it's an operator
+      if (currentOutput === '' || currentOutput === 'Error') {
+        if (value === '-') output.textContent = value;
+      } else {
+        const lastChar = currentOutput.slice(-1);
+        if (/[+\-x/]/.test(lastChar)) {
+          output.textContent = currentOutput.slice(0, -1) + value;
+        } else {
+          output.textContent += `${value} `;
+        }
+      }
+    }
   });
 });
+
+function formatNumber(num) {
+  const parts = num.split('.');
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return parts.join('.');
+}
 
 calc.addEventListener("click", () => {
   try {
