@@ -34,6 +34,7 @@
 - White: hsl(0, 0%, 100%) */
 
 body {
+  user-select: none;
   background-color: var(--Very-dark-blue-main-bg);
   font-family: "League Spartan", sans-serif;
   font-optical-sizing: auto;
